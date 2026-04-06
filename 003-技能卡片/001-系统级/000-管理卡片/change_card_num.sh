@@ -57,7 +57,7 @@ echo "--- 更新角色卡片引用 ---"
 for CARD in $(find "$SEED_BOX/001-角色卡片" -name "*.md" -type f); do
 	if grep -q "^知识卡片：.*\b$OLD_NUM\b" "$CARD"; then
 		echo "更新: $CARD"
-		sed -i "s/\b$OLD_NUM\b/$NEW_NUM/g" "$CARD"
+		sed -i "/^知识卡片：/s/\b$OLD_NUM\b/$NEW_NUM/g" "$CARD"
 	fi
 done
 
