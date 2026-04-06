@@ -21,19 +21,28 @@ if [ -z "$ROLE_FILE" ]; then
 	exit 1
 fi
 
+# 支持绝对路径和相对路径
+if [[ "$ROLE_FILE" = /* ]]; then
+	# 绝对路径直接使用
+	RESOLVED_ROLE_PATH="$ROLE_FILE"
+else
+	# 相对路径拼接 SEED_BOX
+	RESOLVED_ROLE_PATH="$SEED_BOX/$ROLE_FILE"
+fi
+
 # 1. 输出角色卡片内容
-if [ -f "$SEED_BOX/$ROLE_FILE" ]; then
+if [ -f "$RESOLVED_ROLE_PATH" ]; then
 	echo "=== 角色卡片 ==="
-	cat "$SEED_BOX/$ROLE_FILE"
+	cat "$RESOLVED_ROLE_PATH"
 	echo ""
 else
-	echo "错误: 找不到角色卡片 $SEED_BOX/$ROLE_FILE"
+	echo "错误: 找不到角色卡片 $RESOLVED_ROLE_PATH"
 	exit 1
 fi
 
 # 2. 输出知识卡片内容
 echo "=== 关联知识卡片 ==="
-KNOWLEDGE_NUMS=$(grep "^知识卡片：" "$SEED_BOX/$ROLE_FILE" | sed 's/知识卡片：//')
+KNOWLEDGE_NUMS=$(grep "^知识卡片：" "$RESOLVED_ROLE_PATH" | sed 's/知识卡片：//')
 
 if [ -n "$KNOWLEDGE_NUMS" ]; then
 	for NUM in $KNOWLEDGE_NUMS; do
@@ -51,7 +60,7 @@ fi
 # 3. 输出技能卡片内容
 echo ""
 echo "=== 关联技能卡片 ==="
-SKILL_NUMS=$(grep "^技能：" "$SEED_BOX/$ROLE_FILE" | sed 's/技能：//')
+SKILL_NUMS=$(grep "^技能：" "$RESOLVED_ROLE_PATH" | sed 's/技能：//')
 
 if [ -n "$SKILL_NUMS" ]; then
 	for NUM in $SKILL_NUMS; do
