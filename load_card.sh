@@ -64,7 +64,7 @@ SKILL_NUMS=$(grep "^技能：" "$RESOLVED_ROLE_PATH" | sed 's/技能：//')
 
 if [ -n "$SKILL_NUMS" ]; then
 	for NUM in $SKILL_NUMS; do
-		SKILL_DIR=$(find "$SEED_BOX/003-技能" -type d -name "${NUM}-*" 2>/dev/null | head -1)
+		SKILL_DIR=$(find "$SEED_BOX/003-技能卡片" -type d -name "${NUM}-*" 2>/dev/null | head -1)
 		if [ -f "$SKILL_DIR/SKILL.md" ]; then
 			echo ""
 			echo "--- $SKILL_DIR/SKILL.md ---"
