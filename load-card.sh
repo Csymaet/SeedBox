@@ -1,10 +1,20 @@
 #!/bin/bash
-# 用法: ./load-card.sh <角色卡片路径>
-# 示例: ./load-card.sh 001-角色卡片/002-用户级/010-git专家_小提.md
-# 输出: 角色卡片 + 关联知识卡片内容
-
 ROLE_FILE="$1"
-SEED_BOX="$(cd "$(dirname "$0")" && pwd)"
+
+find_seed_box() {
+	DIR="$(dirname "$0")"
+	while [ "$DIR" != "/" ]; do
+		if [ -d "$DIR/001-角色卡片" ] && [ -d "$DIR/002-知识卡片" ]; then
+			echo "$DIR"
+			return 0
+		fi
+		DIR="$(dirname "$DIR")"
+	done
+	echo "错误: 未找到 seed-box 根目录" >&2
+	return 1
+}
+
+SEED_BOX="$(find_seed_box)"
 
 if [ -z "$ROLE_FILE" ]; then
 	echo "用法: $0 <角色卡片路径>"
