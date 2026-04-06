@@ -45,9 +45,18 @@ if [ -z "$ROLE_FILE" ]; then
 		echo ""
 	done
 else
-	if [ ! -f "$SEED_BOX/$ROLE_FILE" ]; then
-		echo "错误: 找不到 $SEED_BOX/$ROLE_FILE"
+	# 处理绝对路径和相对路径
+	if [[ "$ROLE_FILE" == /* ]]; then
+		# 绝对路径，直接使用
+		ROLE_PATH="$ROLE_FILE"
+	else
+		# 相对路径，拼接 SEED_BOX
+		ROLE_PATH="$SEED_BOX/$ROLE_FILE"
+	fi
+
+	if [ ! -f "$ROLE_PATH" ]; then
+		echo "错误: 找不到 $ROLE_PATH"
 		exit 1
 	fi
-	check_role "$SEED_BOX/$ROLE_FILE"
+	check_role "$ROLE_PATH"
 fi
