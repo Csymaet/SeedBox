@@ -4,7 +4,7 @@ ROLE_FILE="$1"
 find_seed_box() {
 	DIR="$(dirname "$0")"
 	while [ "$DIR" != "/" ]; do
-		if [ -d "$DIR/001-角色卡片" ] && [ -d "$DIR/002-知识卡片" ] && [ -d "$DIR/004-记忆卡片" ]; then
+		if [ -d "$DIR/001-角色卡片" ] && [ -d "$DIR/002-知识卡片" ]; then
 			echo "$DIR"
 			return 0
 		fi
@@ -73,17 +73,4 @@ if [ -n "$SKILL_NUMS" ]; then
 			echo "（未找到技能卡片: $NUM）"
 		fi
 	done
-fi
-
-# 4. 输出角色记忆
-echo ""
-echo "=== 角色记忆 ==="
-ROLE_NUM=$(basename "$RESOLVED_ROLE_PATH" | sed 's/-.*//')
-MEMORY=$(find "$SEED_BOX/004-记忆卡片" -name "${ROLE_NUM}-*.md" 2>/dev/null | head -1)
-if [ -f "$MEMORY" ]; then
-	echo ""
-	echo "--- $MEMORY ---"
-	cat "$MEMORY"
-else
-	echo "（无记忆）"
 fi

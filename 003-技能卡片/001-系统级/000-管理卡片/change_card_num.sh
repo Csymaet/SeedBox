@@ -5,7 +5,7 @@ NEW_NUM="$2"
 find_seed_box() {
 	DIR="$(dirname "$0")"
 	while [ "$DIR" != "/" ]; do
-		if [ -d "$DIR/001-角色卡片" ] && [ -d "$DIR/002-知识卡片" ] && [ -d "$DIR/004-记忆卡片" ]; then
+		if [ -d "$DIR/001-角色卡片" ] && [ -d "$DIR/002-知识卡片" ]; then
 			echo "$DIR"
 			return 0
 		fi
@@ -60,22 +60,6 @@ for CARD in $(find "$SEED_BOX/001-角色卡片" -name "*.md" -type f); do
 		sed -i "/^知识卡片：/s/\b$OLD_NUM\b/$NEW_NUM/g" "$CARD"
 	fi
 done
-
-echo ""
-
-# 3. 重命名记忆卡片
-echo "--- 重命名记忆卡片 ---"
-MEMORY=$(find "$SEED_BOX/004-记忆卡片" -name "${OLD_NUM}-*.md" -type f 2>/dev/null | head -1)
-if [ -n "$MEMORY" ]; then
-	MEM_DIR=$(dirname "$MEMORY")
-	MEM_FILENAME=$(basename "$MEMORY")
-	NEW_MEM_FILENAME=$(echo "$MEM_FILENAME" | sed "s/^${OLD_NUM}-/${NEW_NUM}-/")
-	NEW_MEMORY="$MEM_DIR/$NEW_MEM_FILENAME"
-	echo "重命名: $MEMORY -> $NEW_MEMORY"
-	mv "$MEMORY" "$NEW_MEMORY"
-else
-	echo "无记忆卡片: $OLD_NUM"
-fi
 
 echo ""
 echo "完成"
