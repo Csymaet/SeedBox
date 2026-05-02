@@ -4,7 +4,7 @@ ROLE_FILE="$1"
 find_seed_box() {
 	DIR="$(dirname "$0")"
 	while [ "$DIR" != "/" ]; do
-		if [ -d "$DIR/001-角色卡片" ] && [ -d "$DIR/002-知识卡片" ]; then
+		if [ -d "$DIR/001-角色卡片" ] && [ -d "$DIR/002-知识卡片" ] && [ -d "$DIR/004-记忆卡片" ]; then
 			echo "$DIR"
 			return 0
 		fi
